@@ -2,47 +2,71 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SnapTik - Tải Video TikTok Không Logo</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="extra.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SnapTok Tải Video</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f0f0f0;
+      text-align: center;
+    }
+    input {
+      width: 80%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #00be63;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
-<body data-lang="en">
+<body>
+  <h1>Tải Video TikTok Không Logo</h1>
+  <input type="text" id="tiktokUrl" placeholder="Dán link video TikTok vào đây" />
+  <br>
+  <button onclick="download()">Tải Video</button>
 
-  <!-- Navbar -->
-  <nav class="navbar" role="navigation">
-    <div class="container">
-      <div class="navbar-brand">
-        <a class="navbar-item logo" href="#"><span>SnapTik</span></a>
-      </div>
-    </div>
-  </nav>
+  <div class="result" id="resultBox"></div>
 
-  <!-- Hero Section -->
-  <section id="hero" class="section hero">
-    <div class="container w100">
-      <h1 class="title">Tải Video TikTok</h1>
-      <h2 class="title title-2">Download Video TikTok không logo, chất lượng HD</h2>
-      <form class="form" name="formurl" method="get">
-        <div class="is-relative" style="overflow: hidden;width: 100%;">
-          <input name="url" id="url" type="text" class="link-input" placeholder="Dán liên kết TikTok vào đây" required />
-          <button class="button button-paste" type="button"><span>Dán</span></button>
-        </div>
-        <button type="submit" class="button button-go is-link"><span>Tải về</span></button>
-      </form>
-    </div>
-  </section>
+  <script>
+    async function download() {
+      const url = document.getElementById("tiktokUrl").value.trim();
+      const resultBox = document.getElementById("resultBox");
+      if (!url) return alert("Vui lòng dán link TikTok.");
 
-  <!-- Nội dung thêm nếu cần... -->
+      resultBox.innerHTML = "⏳ Đang xử lý...";
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <p>© 2025 SnapTik - Demo clone</p>
-    </div>
-  </footer>
+      try {
+        const res = await fetch("/api/snaptik", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+        const data = await res.json();
 
-  <!-- Scripts -->
-  <script src="main.js"></script>
+        if (data.code === 0 && data.data.length > 0) {
+          const first = data.data[0];
+          resultBox.innerHTML = `<a href="${first.url}" target="_blank">🔗 Tải video tại đây (${first.label})</a>`;
+        } else {
+          resultBox.innerText = "❌ Không lấy được link. Vui lòng thử lại.";
+        }
+      } catch (err) {
+        console.error(err);
+        resultBox.innerText = "⚠️ Lỗi kết nối đến API.";
+      }
+    }
+  </script>
 </body>
 </html>
