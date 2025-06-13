@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tải video TikTok không logo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .download-box {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      color: white;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    .download-box h1 {
+      margin-bottom: 20px;
+    }
+    .download-box input {
+      width: 80%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    .download-box button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: white;
+      color: #0072ff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .download-box button:hover {
+      opacity: 0.9;
+    }
+    .download-box a {
+      display: inline-block;
+      margin-top: 15px;
+      color: #fff;
+      text-decoration: underline;
+    }
+    #result {
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="download-box">
+    <h1>Tải video TikTok không logo</h1>
+    <input type="text" placeholder="Dán link TikTok vào đây..." id="tiktok-url">
+    <br>
+    <button onclick="startDownload()">Tải Ngay</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function startDownload() {
+      const url = document.getElementById("tiktok-url").value.trim();
+      const resultDiv = document.getElementById("result");
+
+      if (!url) {
+        resultDiv.innerHTML = "<span>Vui lòng nhập link TikTok.</span>";
+        return;
+      }
+
+      resultDiv.innerHTML = "⏳ Đang xử lý...";
+
+      try {
+        const res = await fetch(`/api/download?url=${encodeURIComponent(url)}`);
+        const data = await res.json();
+
+        if (data.no_watermark) {
+          resultDiv.innerHTML = `
+            ✅ Video không logo:
+            <br>
+            <a href="${data.no_watermark}" target="_blank">👉 Tải tại đây</a>
+            <br><br>
+            HD (nếu có):
+            <br>
+            <a href="${data.hd || data.no_watermark}" target="_blank">📥 HD Link</a>
+          `;
+        } else {
+          resultDiv.innerHTML = "❌ Không thể tải video. Hãy kiểm tra lại link.";
+        }
+      } catch (err) {
+        resultDiv.innerHTML = "🚫 Có lỗi xảy ra khi tải video.";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
