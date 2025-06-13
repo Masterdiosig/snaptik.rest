@@ -1,16 +1,11 @@
-// main.js: JavaScript xử lý tương tác chính
-document.addEventListener('DOMContentLoaded', function () {
-  const form = document.querySelector('form');
-  const input = document.querySelector('#url');
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    const url = input.value.trim();
-    if (!url) {
-      alert("Vui lòng dán link video TikTok.");
-      return;
-    }
-    alert("Đang xử lý video từ: " + url);
-    // Ở đây bạn có thể thêm fetch API thực sự hoặc gọi backend Node.js của bạn
-  });
+const res = await fetch('http://localhost:3000/api/snaptik', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ url: "https://www.tiktok.com/@user/video/xyz" })
 });
+const data = await res.json();
+if (data.code === 0) {
+  console.log("Các link tải:", data.data); // bạn có thể lấy link đầu tiên để tải
+} else {
+  alert(data.msg);
+}
