@@ -1,0 +1,32 @@
+/* extra.css: CSS cho modal, alert, snapx... */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+}
+.alert-snaptik {
+  background: #d1e7dd;
+  color: #0a3622;
+  padding: 10px;
+  border: 1px solid #a3cfbb;
+  margin: 20px;
+  border-radius: 4px;
+}
+.snapx-card {
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  margin: 20px;
+  border-radius: 6px;
+}

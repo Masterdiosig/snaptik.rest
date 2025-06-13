@@ -1,0 +1,36 @@
+/* styles.css: CSS chính */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f0f0f0;
+}
+.navbar {
+  background: white;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.hero {
+  background: #195fd7;
+  color: white;
+  padding: 40px 20px;
+  text-align: center;
+}
+.button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.button-go {
+  background-color: #00be63;
+  color: white;
+}
+.link-input {
+  padding: 10px;
+  width: 80%;
+  margin-right: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
