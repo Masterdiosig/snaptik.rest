@@ -1,15 +1,23 @@
-import dotenv from "dotenv";
+// snaptik.js
+const dotenv = require("dotenv");
 dotenv.config();
 
-export default async function handler(req, res) {
-  const { url } = req.body;
-
-  if (!url) {
-    return res.status(400).json({ code: 1, message: "Thiếu URL" });
+const fetch = require("node-fetch"); // nếu bạn chạy local cần import
+const followRedirect = async (shortUrl) => {
+  try {
+    const response = await fetch(shortUrl, { method: "GET", redirect: "follow" });
+    return response.url;
+  } catch {
+    return shortUrl;
   }
+};
+
+const handler = async (req, res) => {
+  const { url } = req.body;
+  if (!url) return res.status(400).json({ code: 1, message: "Thiếu URL" });
 
   try {
-    const finalUrl = await followRedirect(url); // Xử lý link rút gọn TikTok
+    const finalUrl = await followRedirect(url);
 
     const apiRes = await fetch("https://tiktok-video-no-watermark10.p.rapidapi.com/media-info/", {
       method: "POST",
@@ -36,13 +44,7 @@ export default async function handler(req, res) {
     console.error("Lỗi:", err);
     res.status(500).json({ code: 500, message: "Lỗi server" });
   }
-}
+};
 
-async function followRedirect(shortUrl) {
-  try {
-    const response = await fetch(shortUrl, { method: "GET", redirect: "follow" });
-    return response.url;
-  } catch (err) {
-    return shortUrl;
-  }
-}
+module.exports = handler;
+
