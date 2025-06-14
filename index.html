@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SnapTok Tải Video</title>
   <style>
     body {
@@ -35,9 +35,8 @@
 <body>
   <h1>Tải Video TikTok Không Logo</h1>
   <input type="text" id="tiktokUrl" placeholder="Dán link video TikTok vào đây" />
-  <br>
+  <br />
   <button onclick="download()">Tải Video</button>
-
   <div class="result" id="resultBox"></div>
 
   <script>
@@ -49,11 +48,12 @@
       resultBox.innerHTML = "⏳ Đang xử lý...";
 
       try {
-      const res = await fetch("http://localhost:3000/api/snaptik", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ url })
-});
+        // ✅ Sửa lại fetch dùng đường dẫn nội bộ (Vercel)
+        const res = await fetch("/api/snaptik", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
 
         const data = await res.json();
 
