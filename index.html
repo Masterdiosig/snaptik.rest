@@ -49,12 +49,12 @@
       resultBox.innerHTML = "⏳ Đang xử lý...";
 
       try {
-       const res = await fetch("https://radical-lofty-parrotfish.glitch.me/api/snaptik", {
+      const res = await fetch("http://localhost:3000/api/snaptik", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ url })
+});
 
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ url })
-        });
         const data = await res.json();
 
         if (data.code === 0 && data.data.length > 0) {
