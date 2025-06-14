@@ -6,8 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Bước 1: nếu là link rút gọn, theo dõi chuyển hướng để lấy full link
-    const finalUrl = await resolveRedirect(url);
+    const finalUrl = await followRedirect(url); // xử lý link rút gọn
 
     const apiRes = await fetch("https://tiktok-download-video-without-watermark.p.rapidapi.com/analysis", {
       method: "POST",
@@ -21,28 +20,32 @@ export default async function handler(req, res) {
 
     const data = await apiRes.json();
 
-    console.log("Phản hồi từ RapidAPI:", data);
+    console.log("Kết quả từ RapidAPI:", data); // log ra để bạn kiểm tra
 
     if (data.code === 0 && data.data?.play) {
-      res.status(200).json({
+      return res.status(200).json({
         code: 0,
         data: [{ url: data.data.play, label: "Tải video" }]
       });
-    } else {
-      res.status(200).json({ code: 2, message: "Không lấy được video.", raw: data });
     }
+
+    return res.status(200).json({ code: 2, message: "Không lấy được video từ API", raw: data });
   } catch (err) {
     console.error("Lỗi:", err);
-    res.status(500).json({ code: 500, message: "Lỗi server" });
+    return res.status(500).json({ code: 500, message: "Lỗi server" });
   }
 }
 
-// Hàm theo dõi redirect
-async function resolveRedirect(shortUrl) {
-  const res = await fetch(shortUrl, {
-    method: "GET",
-    redirect: "follow"
-  });
-  return res.url;
+async function followRedirect(shortUrl) {
+  try {
+    const response = await fetch(shortUrl, {
+      method: "GET",
+      redirect: "follow"
+    });
+    return response.url;
+  } catch (err) {
+    console.error("Lỗi redirect:", err);
+    return shortUrl; // fallback nếu fail
+  }
 }
 
