@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+console.log("🔑 RAPIDAPI_KEY = ", process.env.RAPIDAPI_KEY);
 
 export default async function handler(req, res) {
   const { url } = req.body;
