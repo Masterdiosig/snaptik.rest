@@ -1,9 +1,7 @@
- 
- import dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
- 
- export default async function handler(req, res) {
+export default async function handler(req, res) {
   const { url } = req.body;
 
   if (!url) {
@@ -11,7 +9,7 @@ dotenv.config();
   }
 
   try {
-    const finalUrl = await followRedirect(url); // xử lý link rút gọn
+    const finalUrl = await followRedirect(url);
 
     const apiRes = await fetch("https://tiktok-download-video-without-watermark.p.rapidapi.com/analysis", {
       method: "POST",
@@ -25,32 +23,28 @@ dotenv.config();
 
     const data = await apiRes.json();
 
-    console.log("Kết quả từ RapidAPI:", data); // log ra để bạn kiểm tra
+    console.log("Kết quả từ RapidAPI:", data);
 
     if (data.code === 0 && data.data?.play) {
-      return res.status(200).json({
+      res.status(200).json({
         code: 0,
         data: [{ url: data.data.play, label: "Tải video" }]
       });
+    } else {
+      res.status(200).json({ code: 2, message: "Không lấy được video", raw: data });
     }
-
-    return res.status(200).json({ code: 2, message: "Không lấy được video từ API", raw: data });
   } catch (err) {
     console.error("Lỗi:", err);
-    return res.status(500).json({ code: 500, message: "Lỗi server" });
+    res.status(500).json({ code: 500, message: "Lỗi server" });
   }
 }
 
 async function followRedirect(shortUrl) {
   try {
-    const response = await fetch(shortUrl, {
-      method: "GET",
-      redirect: "follow"
-    });
+    const response = await fetch(shortUrl, { method: "GET", redirect: "follow" });
     return response.url;
   } catch (err) {
-    console.error("Lỗi redirect:", err);
-    return shortUrl; // fallback nếu fail
+    return shortUrl;
   }
 }
 
