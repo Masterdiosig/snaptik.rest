@@ -8,9 +8,7 @@ const handler = async (req, res) => {
   if (!url) return res.status(400).json({ code: 1, message: "Thiếu URL" });
 
   try {
-    const apiUrl = "https://tiktok-video-downloader-api.p.rapidapi.com/media";
-
-    const response = await axios.get(apiUrl, {
+    const response = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
       params: { videoUrl: url },
       headers: {
         "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
@@ -19,10 +17,9 @@ const handler = async (req, res) => {
     });
 
     const data = response.data;
-    console.log("✅ Kết quả từ RapidAPI:", data);
+    console.log("✅ Dữ liệu trả về:", data);
 
-    // Lấy link tải từ response
-    const downloadUrl = data?.video?.noWatermark || data?.video?.url;
+    const downloadUrl = data?.downloadUrl;
 
     if (downloadUrl) {
       return res.status(200).json({
@@ -47,4 +44,5 @@ const handler = async (req, res) => {
 };
 
 module.exports = handler;
+
 
