@@ -1,13 +1,14 @@
-// snaptik.js
 const dotenv = require("dotenv");
+const axios = require("axios");
+
 dotenv.config();
 
-const fetch = require("node-fetch"); // nếu bạn chạy local cần import
 const followRedirect = async (shortUrl) => {
   try {
-    const response = await fetch(shortUrl, { method: "GET", redirect: "follow" });
-    return response.url;
-  } catch {
+    const response = await axios.get(shortUrl, { maxRedirects: 5 });
+    return response.request.res.responseUrl || shortUrl;
+  } catch (err) {
+    console.warn("Lỗi follow redirect:", err.message);
     return shortUrl;
   }
 };
@@ -19,17 +20,19 @@ const handler = async (req, res) => {
   try {
     const finalUrl = await followRedirect(url);
 
-    const apiRes = await fetch("https://tiktok-video-no-watermark10.p.rapidapi.com/media-info/", {
+    const options = {
       method: "POST",
+      url: "https://tiktok-video-no-watermark10.p.rapidapi.com/media-info/",
       headers: {
         "content-type": "application/json",
         "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
         "X-RapidAPI-Host": "tiktok-video-no-watermark10.p.rapidapi.com"
       },
-      body: JSON.stringify({ url: finalUrl })
-    });
+      data: { url: finalUrl }
+    };
 
-    const data = await apiRes.json();
+    const apiRes = await axios.request(options);
+    const data = apiRes.data;
     console.log("Kết quả từ RapidAPI:", data);
 
     if (data?.data?.play) {
@@ -41,10 +44,11 @@ const handler = async (req, res) => {
       res.status(200).json({ code: 2, message: "Không lấy được video", raw: data });
     }
   } catch (err) {
-    console.error("Lỗi:", err);
-    res.status(500).json({ code: 500, message: "Lỗi server" });
+    console.error("Lỗi gọi RapidAPI:", err.message);
+    res.status(500).json({ code: 500, message: "Lỗi server", error: err.message });
   }
 };
 
 module.exports = handler;
+
 
