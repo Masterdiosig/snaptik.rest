@@ -33,14 +33,15 @@
         if (data.code === 0) {
           const { thumbnail, description, noWatermark, watermark, audio } = data;
           resultBox.innerHTML = `
-            <div class="snapx-card">
-              <img src="${thumbnail}" width="100" style="border-radius: 6px;" />
-              <p><strong>${description || "Video TikTok"}</strong></p>
-              <button class="button button-go" onclick="window.open('${noWatermark}', '_blank')">⬇️ Tải không logo HD</button><br/><br/>
-              <button class="button button-go" onclick="window.open('${watermark}', '_blank')">⬇️ Tải có logo HD</button><br/><br/>
-              <button class="button button-go" onclick="window.open('${audio}', '_blank')">🎵 Tải nhạc</button>
-            </div>
-          `;
+  <div class="snapx-card">
+    <img src="${thumbnail}" width="100" style="border-radius: 6px;" />
+    <p><strong>${description || "Video TikTok"}</strong></p>
+    <a class="button button-go" href="${noWatermark}" target="_blank" rel="noopener">⬇️ Tải không logo HD</a><br/><br/>
+    <a class="button button-go" href="${watermark}" target="_blank" rel="noopener">⬇️ Tải có logo HD</a><br/><br/>
+    <a class="button button-go" href="${audio}" target="_blank" rel="noopener">🎵 Tải nhạc</a>
+  </div>
+`;
+
         } else {
           resultBox.innerText = "❌ Không lấy được video.";
         }
