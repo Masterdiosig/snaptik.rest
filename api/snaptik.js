@@ -1,44 +1,33 @@
 const axios = require("axios");
 
-const followRedirect = async (shortUrl) => {
-  try {
-    const response = await axios.get(shortUrl, { maxRedirects: 5 });
-    return response.request.res.responseUrl || shortUrl;
-  } catch (err) {
-    console.warn("⚠️ Lỗi follow redirect:", err.message);
-    return shortUrl;
-  }
-};
-
 const handler = async (req, res) => {
-  console.log("📥 Gọi API snaptik");
+  console.log("📥 Gọi API snaptik mới");
   console.log("🔑 RAPIDAPI_KEY:", process.env.RAPIDAPI_KEY || "⛔ Không tồn tại");
 
   const { url } = req.body;
   if (!url) return res.status(400).json({ code: 1, message: "Thiếu URL" });
 
   try {
-    const finalUrl = await followRedirect(url);
+    const apiUrl = "https://tiktok-video-downloader-api.p.rapidapi.com/media";
 
-    const response = await axios.post(
-      "https://tiktok-video-no-watermark10.p.rapidapi.com/media-info/",
-      { url: finalUrl },
-      {
-        headers: {
-          "content-type": "application/json",
-          "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
-          "X-RapidAPI-Host": "tiktok-video-no-watermark10.p.rapidapi.com"
-        }
+    const response = await axios.get(apiUrl, {
+      params: { videoUrl: url },
+      headers: {
+        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
+        "X-RapidAPI-Host": "tiktok-video-downloader-api.p.rapidapi.com"
       }
-    );
+    });
 
     const data = response.data;
     console.log("✅ Kết quả từ RapidAPI:", data);
 
-    if (data?.data?.play) {
+    // Lấy link tải từ response
+    const downloadUrl = data?.video?.noWatermark || data?.video?.url;
+
+    if (downloadUrl) {
       return res.status(200).json({
         code: 0,
-        data: [{ url: data.data.play, label: "Tải video" }]
+        data: [{ url: downloadUrl, label: "Tải video" }]
       });
     } else {
       return res.status(200).json({
@@ -58,3 +47,4 @@ const handler = async (req, res) => {
 };
 
 module.exports = handler;
+
