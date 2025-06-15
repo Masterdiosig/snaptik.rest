@@ -1,28 +1,30 @@
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
 const axios = require("axios");
+
+dotenv.config();
+const app = express();
+app.use(cors());
+app.use(express.json());
 
 const followRedirect = async (shortUrl) => {
   try {
     const response = await axios.get(shortUrl, { maxRedirects: 5 });
     return response.request.res.responseUrl || shortUrl;
-  } catch (err) {
-    console.warn("⚠️ Lỗi follow redirect:", err.message);
+  } catch {
     return shortUrl;
   }
 };
 
-const handler = async (req, res) => {
-  console.log("📥 Gọi API snaptik mới");
-  console.log("🔑 RAPIDAPI_KEY:", process.env.RAPIDAPI_KEY || "⛔ Không tồn tại");
-
+app.post("/api/snaptik", async (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ code: 1, message: "Thiếu URL" });
 
   try {
-    // ✅ Giải mã nếu là shortlink vt.tiktok.com
     const finalUrl = await followRedirect(url);
-    console.log("🔗 Final TikTok URL:", finalUrl);
 
-    const response = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
+    const apiRes = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
       params: { videoUrl: finalUrl },
       headers: {
         "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
@@ -30,31 +32,21 @@ const handler = async (req, res) => {
       }
     });
 
-    const data = response.data;
-    console.log("✅ Dữ liệu trả về:", data);
+    const data = apiRes.data;
 
-    const downloadUrl = data?.downloadUrl;
-
-    if (downloadUrl) {
-      return res.status(200).json({
-        code: 0,
-        data: [{ url: downloadUrl, label: "Tải video" }]
-      });
-    } else {
-      return res.status(200).json({
-        code: 2,
-        message: "❌ Không lấy được video",
-        raw: data
-      });
-    }
-  } catch (err) {
-    console.error("🔥 Lỗi gọi RapidAPI:", err.message);
-    return res.status(500).json({
-      code: 500,
-      message: "Lỗi server",
-      error: err.message
+    res.status(200).json({
+      code: 0,
+      description: data.description || "",
+      thumbnail: data.cover || "",
+      noWatermark: data.video?.noWatermark || "",
+      watermark: data.video?.url || "",
+      audio: data.music?.url || ""
     });
+  } catch (err) {
+    console.error("🔥 Lỗi API:", err.message);
+    res.status(500).json({ code: 500, message: "Lỗi server", error: err.message });
   }
-};
+});
 
-module.exports = handler;
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`✅ Server chạy tại http://localhost:${PORT}`));

@@ -1,36 +1,34 @@
-/* styles.css: CSS chính */
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
   background: #f0f0f0;
-}
-.navbar {
-  background: white;
-  padding: 10px 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.hero {
-  background: #195fd7;
-  color: white;
-  padding: 40px 20px;
+  padding: 40px;
   text-align: center;
+}
+.link-input {
+  width: 80%;
+  padding: 12px;
+  font-size: 16px;
+  margin-bottom: 12px;
 }
 .button {
   padding: 12px 20px;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
+  font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
 }
 .button-go {
-  background-color: #00be63;
+  background-color: #6c5ce7;
   color: white;
 }
-.link-input {
-  padding: 10px;
-  width: 80%;
-  margin-right: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+.result {
+  margin-top: 20px;
+}
+.snapx-card {
+  background: white;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
