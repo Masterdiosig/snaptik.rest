@@ -32,16 +32,19 @@
 
         if (data.code === 0) {
           const { thumbnail, description, noWatermark, watermark, audio } = data;
-          resultBox.innerHTML = `
-  <div class="snapx-card">
-    <img src="${thumbnail}" width="100" style="border-radius: 6px;" />
-    <p><strong>${description || "Video TikTok"}</strong></p>
-    <a class="button button-go" href="${noWatermark}" target="_blank" rel="noopener">⬇️ Tải không logo HD</a><br/><br/>
-    <a class="button button-go" href="${watermark}" target="_blank" rel="noopener">⬇️ Tải có logo HD</a><br/><br/>
-    <a class="button button-go" href="${audio}" target="_blank" rel="noopener">🎵 Tải nhạc</a>
-  </div>
-`;
 
+          // Nếu không có file nào thì ẩn link
+          const noWM = noWatermark ? `<a class="button button-go" href="${noWatermark}" download target="_blank" rel="noopener">⬇️ Tải không logo HD</a><br/><br/>` : '';
+          const wm = watermark ? `<a class="button button-go" href="${watermark}" download target="_blank" rel="noopener">⬇️ Tải có logo HD</a><br/><br/>` : '';
+          const music = audio ? `<a class="button button-go" href="${audio}" download target="_blank" rel="noopener">🎵 Tải nhạc</a>` : '';
+
+          resultBox.innerHTML = `
+            <div class="snapx-card">
+              <img src="${thumbnail}" width="100" style="border-radius: 6px;" />
+              <p><strong>${description || "Video TikTok"}</strong></p>
+              ${noWM}${wm}${music}
+            </div>
+          `;
         } else {
           resultBox.innerText = "❌ Không lấy được video.";
         }
@@ -53,4 +56,5 @@
   </script>
 </body>
 </html>
+
 
