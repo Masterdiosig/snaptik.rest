@@ -1,4 +1,5 @@
 const axios = require("axios");
+
 const followRedirect = async (shortUrl) => {
   try {
     const response = await axios.get(shortUrl, { maxRedirects: 5 });

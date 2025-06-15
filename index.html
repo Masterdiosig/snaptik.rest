@@ -60,16 +60,6 @@
         if (data.code === 0 && data.data.length > 0) {
           const first = data.data[0];
           resultBox.innerHTML = `<a href="${first.url}" target="_blank">🔗 Tải video tại đây (${first.label})</a>`;
-<div class="result" id="resultBox">
-  <div class="video-info">
-    <img src="THUMBNAIL_URL" style="width: 100px; border-radius: 8px;" />
-    <p style="margin: 10px 0;"><strong>mô tả video</strong></p>
-  </div>
-  <button class="button button-go" onclick="window.open('LINK_NO_WATERMARK')">Tải không logo HD</button>
-  <button class="button button-go" onclick="window.open('LINK_WITH_LOGO')">Tải có logo HD</button>
-  <button class="button button-go" onclick="window.open('LINK_AUDIO')">Tải nhạc</button>
-</div>
-
         } else {
           resultBox.innerText = "❌ Không lấy được link. Vui lòng thử lại.";
         }
