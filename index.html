@@ -59,7 +59,15 @@
 
         if (data.code === 0 && data.data.length > 0) {
           const first = data.data[0];
-          resultBox.innerHTML = `<a href="${first.url}" target="_blank">🔗 Tải video tại đây (${first.label})</a>`;
+        resultBox.innerHTML = data.data.map(item => `
+  <a href="${item.url}" target="_blank">
+    <button class="button button-go" style="margin: 8px 0;">⬇️ ${item.label}</button>
+  </a>
+`).join('');
+
+
+
+
         } else {
           resultBox.innerText = "❌ Không lấy được link. Vui lòng thử lại.";
         }

@@ -22,24 +22,27 @@ const handler = async (req, res) => {
     const finalUrl = await followRedirect(url);
     console.log("🔗 Final TikTok URL:", finalUrl);
 
-    const response = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
-      params: { videoUrl: finalUrl },
-      headers: {
-        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "tiktok-video-downloader-api.p.rapidapi.com"
-      }
-    });
+   const response = await axios.get("https://tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com/vid", {
+  params: { url: finalUrl },
+  headers: {
+    "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
+    "X-RapidAPI-Host": "tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com"
+  }
+});
 
-    const data = response.data;
-    console.log("✅ Dữ liệu trả về:", data);
+const data = response.data?.video;
 
-    const downloadUrl = data?.downloadUrl;
+return res.status(200).json({
+  code: 0,
+  data: [
+    { url: data.no_watermark, label: "Tải xuống không có hình mờ HD" },
+    { url: data.watermark, label: "Tải xuống với hình mờ" },
+    { url: data.music, label: "Tải nhạc" }
+  ]
+});
 
-    if (downloadUrl) {
-      return res.status(200).json({
-        code: 0,
-        data: [{ url: downloadUrl, label: "Tải video" }]
-      });
+
+
     } else {
       return res.status(200).json({
         code: 2,
@@ -55,7 +58,6 @@ const handler = async (req, res) => {
       error: err.message
     });
   }
-};
 
 module.exports = handler;
 
