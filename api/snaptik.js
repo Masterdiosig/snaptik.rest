@@ -14,6 +14,9 @@ const followRedirect = async (shortUrl) => {
 };
 
 const handler = async (req, res) => {
+  // ✅ Sửa lỗi res not defined
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
   const { url } = req.body;
   if (!url) return res.status(400).json({ code: 1, message: "Thiếu URL" });
 
@@ -26,18 +29,13 @@ const handler = async (req, res) => {
     });
 
     const data = response.data;
+
     if (!data.downloadUrl) {
-  return res.status(200).json({
-    code: 2,
-    message: "❌ Không lấy được video (API không trả về downloadUrl)",
-    raw: data // 👈 rất quan trọng để debug
-  });
-}
-
-
-      
-      {
-      return res.status(200).json({ code: 2, message: "❌ Không lấy được video", raw: data });
+      return res.status(200).json({
+        code: 2,
+        message: "❌ Không lấy được video (API không trả về downloadUrl)",
+        raw: data
+      });
     }
 
     return res.status(200).json({
@@ -59,7 +57,6 @@ const handler = async (req, res) => {
 
 module.exports = handler;
 
-res.setHeader("Access-Control-Allow-Origin", "*"); // Cho phép tất cả domain gọi
 
 
 
