@@ -26,8 +26,14 @@ const handler = async (req, res) => {
     });
 
     const data = response.data;
-    if (!data.downloadUrl)
-      console.log("📦 Dữ liệu trả về từ API robotilab:", data);
+    if (!data.downloadUrl) {
+  return res.status(200).json({
+    code: 2,
+    message: "❌ Không lấy được video (API không trả về downloadUrl)",
+    raw: data // 👈 rất quan trọng để debug
+  });
+}
+
 
       
       {
