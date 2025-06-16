@@ -7,48 +7,70 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 40px;
       background: #f0f0f0;
+      padding: 0;
+      margin: 0;
       text-align: center;
+    }
+    .hero {
+      background: #6b4eff;
+      color: white;
+      padding: 40px 20px;
+    }
+    .container {
+      margin-top: 20px;
+      padding: 20px;
     }
     input {
       width: 80%;
       padding: 12px;
-      margin: 10px 0;
+      margin: 10px auto;
       font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      background: #00be63;
+    .button-go {
+      background-color: #6b4eff;
       color: white;
+      padding: 12px 20px;
+      margin: 10px auto;
+      font-size: 16px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
+      width: 80%;
+      display: block;
     }
     .result {
       margin-top: 20px;
-      font-weight: bold;
+    }
+    a {
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <h1>Tải Video TikTok Không Logo</h1>
-  <input type="text" id="tiktokUrl" placeholder="Dán link video TikTok vào đây" />
-  <br />
-  <button onclick="download()">Tải Video</button>
-  <div class="result" id="resultBox"></div>
+  <div class="hero">
+    <h1>SnapTok - Tải Video TikTok Không Logo</h1>
+    <p>Dán link TikTok để tải video chất lượng cao</p>
+  </div>
+
+  <div class="container">
+    <input type="text" id="tiktokUrl" placeholder="Dán link TikTok tại đây..." />
+    <button class="button-go" onclick="download()">Tải video</button>
+
+    <div class="result" id="resultBox"></div>
+  </div>
 
   <script>
     async function download() {
       const url = document.getElementById("tiktokUrl").value.trim();
       const resultBox = document.getElementById("resultBox");
-      if (!url) return alert("Vui lòng dán link TikTok.");
+      if (!url) return alert("Vui lòng nhập link TikTok.");
 
       resultBox.innerHTML = "⏳ Đang xử lý...";
 
       try {
-        // ✅ Sửa lại fetch dùng đường dẫn nội bộ (Vercel)
         const res = await fetch("/api/snaptik", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -58,22 +80,17 @@
         const data = await res.json();
 
         if (data.code === 0 && data.data.length > 0) {
-          const first = data.data[0];
-        resultBox.innerHTML = data.data.map(item => `
-  <a href="${item.url}" target="_blank">
-    <button class="button button-go" style="margin: 8px 0;">⬇️ ${item.label}</button>
-  </a>
-`).join('');
-
-
-
-
+          resultBox.innerHTML = data.data.map(item => `
+            <a href="${item.url}" target="_blank">
+              <button class="button-go">⬇️ ${item.label}</button>
+            </a>
+          `).join('');
         } else {
-          resultBox.innerText = "❌ Không lấy được link. Vui lòng thử lại.";
+          resultBox.innerHTML = "❌ Không lấy được link. Hãy kiểm tra lại.";
         }
       } catch (err) {
         console.error(err);
-        resultBox.innerText = "⚠️ Lỗi kết nối đến API.";
+        resultBox.innerHTML = "⚠️ Lỗi kết nối đến API.";
       }
     }
   </script>
