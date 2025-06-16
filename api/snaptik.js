@@ -1,46 +1,35 @@
 const axios = require("axios");
 
-const followRedirect = async (shortUrl) => {
-  try {
-    const response = await axios.get(shortUrl, { maxRedirects: 5 });
-    return response.request.res.responseUrl || shortUrl;
-  } catch (err) {
-    console.warn("⚠️ Lỗi redirect:", err.message);
-    return shortUrl;
-  }
-};
-
 const handler = async (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ code: 1, message: "Thiếu URL" });
 
-  const finalUrl = await followRedirect(url);
-
   try {
-    const response = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
-      params: { url: finalUrl },
-      headers: {
-        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com"
-      }
+    const response = await axios.get("https://robotilab.xyz/api/tiktok", {
+      params: { url }
     });
 
-    const video = response.data?.video;
+    const data = response.data;
+    console.log("📦 API trả về:", data);
 
-    if (!video?.no_watermark) {
-      return res.status(200).json({ code: 2, message: "Không lấy được video", raw: video });
+    if (!data.downloadUrl) {
+      return res.status(200).json({ code: 2, message: "❌ Không lấy được video", raw: data });
     }
 
+    // Gửi lại dữ liệu cho client
     return res.status(200).json({
       code: 0,
       data: [
-        { url: video.no_watermark, label: "Tải xuống không có hình mờ HD" },
-        { url: video.watermark, label: "Tải xuống với hình mờ HD" },
-        { url: video.music, label: "Tải nhạc" }
-      ]
+        { url: data.downloadUrl, label: "Tải xuống không có logo" }
+      ],
+      meta: {
+        thumbnail: data.cover,
+        description: data.description,
+        author: data.author?.nickname || data.author?.username
+      }
     });
   } catch (err) {
-    console.error("🔥 Lỗi API:", err.message);
+    console.error("🔥 Lỗi gọi API:", err.message);
     return res.status(500).json({ code: 500, message: "Lỗi server", error: err.message });
   }
 };
