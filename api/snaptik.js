@@ -1,10 +1,14 @@
+// snaptik.js
 const axios = require("axios");
 
 const followRedirect = async (shortUrl) => {
   try {
     const response = await axios.get(shortUrl, {
       maxRedirects: 5,
-      timeout: 5000
+      timeout: 5000,
+      headers: {
+        "User-Agent": "Mozilla/5.0" // TikTok short links cần user-agent
+      }
     });
     return response.request?.res?.responseUrl || shortUrl;
   } catch (err) {
@@ -23,18 +27,21 @@ const handler = async (req, res) => {
   console.log("🔗 Final TikTok URL:", finalUrl);
 
   try {
-    const response = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
-      params: { videoUrl: finalUrl },
+    const response = await axios.get("https://tiktok-download-video1.p.rapidapi.com/getVideo", {
+      params: {
+        url: finalUrl,
+        hd: '1'
+      },
       headers: {
         "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
-        "X-RapidAPI-Host": "tiktok-video-downloader-api.p.rapidapi.com"
+        "X-RapidAPI-Host": "tiktok-download-video1.p.rapidapi.com"
       }
     });
 
-    const data = response.data;
+    const data = response.data?.data || {};
     console.log("✅ API trả về:", data);
 
-    const downloadUrl = data?.downloadUrl;
+    const downloadUrl = data.hdplay || data.play || data.wmplay;
 
     if (!downloadUrl) {
       return res.status(200).json({
@@ -49,8 +56,8 @@ const handler = async (req, res) => {
       data: [{ url: downloadUrl, label: "Tải video" }],
       meta: {
         thumbnail: data.cover,
-        description: data.description,
-        author: data.author?.nickname || data.author?.username
+        description: data.title,
+        author: data.author?.nickname || data.author?.unique_id || ""
       }
     });
   } catch (err) {
