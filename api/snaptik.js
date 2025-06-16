@@ -59,5 +59,7 @@ const handler = async (req, res) => {
 
 module.exports = handler;
 
+res.setHeader("Access-Control-Allow-Origin", "*"); // Cho phép tất cả domain gọi
+
 
 
