@@ -90,7 +90,9 @@
       resultBox.innerHTML = "⏳ Đang xử lý...";
 
       try {
-        const res = await fetch("/api/snaptik", {
+       const res = await fetch("https://snaptok-production.up.railway.app/api/snaptik", {
+
+
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url })
