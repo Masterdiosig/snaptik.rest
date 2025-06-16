@@ -17,7 +17,7 @@ const handler = async (req, res) => {
   const finalUrl = await followRedirect(url);
 
   try {
-    const response = await axios.get("https://tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com/vid", {
+    const response = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
       params: { url: finalUrl },
       headers: {
         "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
