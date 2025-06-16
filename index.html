@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SnapTok - Tải Video TikTok</title>
+  <title>SnapTok - Tải Video TikTok Không Logo</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -71,7 +71,7 @@
 <body>
   <div class="hero">
     <h1>SnapTok - Tải Video TikTok Không Logo</h1>
-    <p>Dán link video TikTok để tải nhanh</p>
+    <p>Dán link video TikTok để tải nhanh, không logo</p>
   </div>
 
   <div class="container">
@@ -90,16 +90,14 @@
       resultBox.innerHTML = "⏳ Đang xử lý...";
 
       try {
-       const res = await fetch("https://snaptok.us/api/snaptik", {
-
-
-
+        const res = await fetch("https://www.snaptok.us/api/snaptik", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url })
         });
 
         const data = await res.json();
+        console.log("📦 API trả về:", data);
 
         if (data.code === 0 && data.data.length > 0) {
           const meta = data.meta || {};
@@ -117,13 +115,14 @@
           resultBox.innerHTML = "❌ Không lấy được link. Vui lòng thử lại.";
         }
       } catch (err) {
-        console.error(err);
+        console.error("⚠️ Lỗi fetch:", err);
         resultBox.innerHTML = "⚠️ Lỗi kết nối đến API.";
       }
     }
   </script>
 </body>
 </html>
+
 
 
 

@@ -14,35 +14,39 @@ const followRedirect = async (shortUrl) => {
 };
 
 const handler = async (req, res) => {
-  // ✅ Sửa lỗi res not defined
   res.setHeader("Access-Control-Allow-Origin", "*");
 
   const { url } = req.body;
   if (!url) return res.status(400).json({ code: 1, message: "Thiếu URL" });
 
   const finalUrl = await followRedirect(url);
-  console.log("🔗 Link sau redirect:", finalUrl);
+  console.log("🔗 Final TikTok URL:", finalUrl);
 
   try {
-    const response = await axios.get("https://robotilab.xyz/api/tiktok", {
-      params: { url: finalUrl }
+    const response = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
+      params: { videoUrl: finalUrl },
+      headers: {
+        "X-RapidAPI-Key": process.env.RAPIDAPI_KEY,
+        "X-RapidAPI-Host": "tiktok-video-downloader-api.p.rapidapi.com"
+      }
     });
 
     const data = response.data;
+    console.log("✅ API trả về:", data);
 
-    if (!data.downloadUrl) {
+    const downloadUrl = data?.downloadUrl;
+
+    if (!downloadUrl) {
       return res.status(200).json({
         code: 2,
-        message: "❌ Không lấy được video (API không trả về downloadUrl)",
+        message: "❌ Không lấy được video",
         raw: data
       });
     }
 
     return res.status(200).json({
       code: 0,
-      data: [
-        { url: data.downloadUrl, label: "Tải xuống không có logo" }
-      ],
+      data: [{ url: downloadUrl, label: "Tải video" }],
       meta: {
         thumbnail: data.cover,
         description: data.description,
@@ -51,11 +55,16 @@ const handler = async (req, res) => {
     });
   } catch (err) {
     console.error("🔥 Lỗi API:", err.message);
-    return res.status(500).json({ code: 500, message: "Lỗi server", error: err.message });
+    return res.status(500).json({
+      code: 500,
+      message: "Lỗi server",
+      error: err.message
+    });
   }
 };
 
 module.exports = handler;
+
 
 
 
