@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SnapTok Safari</title>
+  <link rel="stylesheet" href="extra.css" />
+</head>
+<body>
+  <div class="hero">
+    <h1>SnapTok - Dành cho Safari</h1>
+    <p>Dán link video TikTok để tải nhanh, không logo</p>
+  </div>
+
+  <div class="container">
+    <input type="text" id="tiktokUrl" placeholder="Dán link TikTok tại đây..." />
+    <button class="button-go" onclick="download()">Tải video</button>
+    <div class="result" id="resultBox"></div>
+  </div>
+
+  <script>
+    async function download() {
+      const url = document.getElementById("tiktokUrl").value.trim();
+      const resultBox = document.getElementById("resultBox");
+      if (!url) return alert("Vui lòng nhập link TikTok.");
+
+      resultBox.innerHTML = "⏳ Đang xử lý...";
+
+      try {
+        const res = await fetch("/api/snaptik", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+
+        const data = await res.json();
+        console.log("📦 API trả về:", data);
+
+        if (data.code === 0 && data.data.length > 0) {
+          const meta = data.meta || {};
+          resultBox.innerHTML = `
+            ${meta.thumbnail ? `<img src="${meta.thumbnail}" alt="Thumbnail" class="thumbnail" />` : ""}
+            ${meta.author ? `<div class="author">@${meta.author}</div>` : ""}
+            ${meta.description ? `<div class="desc">${meta.description}</div>` : ""}
+            ${data.data.map(item => `
+              <a href="/api/download?url=${encodeURIComponent(item.url)}" class="button-go">⬇️ ${item.label}</a>
+            `).join('')}
+          `;
+        } else {
+          resultBox.innerHTML = "❌ Không lấy được link. Vui lòng thử lại.";
+        }
+      } catch (err) {
+        resultBox.innerHTML = "⚠️ Lỗi kết nối đến API.";
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
