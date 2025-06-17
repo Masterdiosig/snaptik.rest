@@ -3,111 +3,126 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SnapTok Tải Video</title>
+  <title>SnapTok - Tải Video TikTok Không Logo</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 40px;
       background: #f0f0f0;
+      padding: 0;
+      margin: 0;
       text-align: center;
+    }
+    .hero {
+      background: #ff6e4e;
+      color: white;
+      padding: 40px 20px;
+    }
+    .container {
+      margin-top: 20px;
+      padding: 20px;
     }
     input {
       width: 80%;
       padding: 12px;
-      margin: 10px 0;
+      margin: 10px auto;
       font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
-    button {
-      padding: 12px 20px;
-      font-size: 16px;
-      background: #00be63;
+    .button-go {
+      background-color: #6b4eff;
       color: white;
+      padding: 12px 20px;
+      margin: 10px auto;
+      font-size: 16px;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       cursor: pointer;
+      width: 80%;
+      display: block;
     }
     .result {
       margin-top: 20px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    .video-info {
-      background: #fff;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      text-align: left;
-      display: inline-block;
-      max-width: 90%;
+    img.thumbnail {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 10px;
     }
-    .video-info img {
-      width: 100px;
-      height: auto;
-      float: left;
-      margin-right: 10px;
-      border-radius: 8px;
-    }
-    .button-download {
-      display: block;
-      padding: 12px;
-      margin: 8px 0;
-      background: #6a5acd;
-      color: white;
-      border-radius: 6px;
+    .author {
       font-weight: bold;
-      text-decoration: none;
+      margin: 5px 0;
+    }
+    .desc {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
     }
   </style>
 </head>
 <body>
-  <h1>Tải Video TikTok Không Logo</h1>
-  <input type="text" id="tiktokUrl" placeholder="Dán link video TikTok vào đây" />
-  <br />
-  <button onclick="download()">Tải Video</button>
-  <div class="result" id="resultBox"></div>
+  <div class="hero">
+    <h1>SnapTok - Tải Video TikTok Không Logo</h1>
+    <p>Dán link video TikTok để tải nhanh, không logo</p>
+  </div>
+
+  <div class="container">
+    <input type="text" id="tiktokUrl" placeholder="Dán link TikTok tại đây..." />
+    <button class="button-go" onclick="download()">Tải video</button>
+
+    <div class="result" id="resultBox"></div>
+  </div>
 
   <script>
     async function download() {
       const url = document.getElementById("tiktokUrl").value.trim();
       const resultBox = document.getElementById("resultBox");
-      if (!url) return alert("Vui lòng dán link TikTok.");
+      if (!url) return alert("Vui lòng nhập link TikTok.");
 
       resultBox.innerHTML = "⏳ Đang xử lý...";
 
       try {
-        const res = await fetch("/api/snaptik", {
+        const res = await fetch("https://www.snaptok.us/api/snaptik", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url })
         });
 
         const data = await res.json();
+        console.log("📦 API trả về:", data);
 
         if (data.code === 0 && data.data.length > 0) {
-          let html = "";
-          if (data.meta) {
-            html += `<div class='video-info'>
-                        <img src="${data.meta.thumbnail}" />
-                        <div><strong>${data.meta.description || ""}</strong><br/><small>${data.meta.author || ""}</small></div>
-                     </div>`;
-          }
-
-          for (const item of data.data) {
-            html += `<a class="button-download" href="${item.url}" target="_blank">⬇ ${item.label}</a>`;
-          }
-
-          html += `<a href="#" onclick="location.reload()" style="display:block;margin-top:10px">🔄 Tải video khác</a>`;
-
-          resultBox.innerHTML = html;
+          const meta = data.meta || {};
+          resultBox.innerHTML = `
+            ${meta.thumbnail ? `<img src="${meta.thumbnail}" alt="Thumbnail" class="thumbnail" />` : ""}
+            ${meta.author ? `<div class="author">@${meta.author}</div>` : ""}
+            ${meta.description ? `<div class="desc">${meta.description}</div>` : ""}
+            ${data.data.map(item => `
+              <a href="${item.url}" target="_blank">
+                <button class="button-go">⬇️ ${item.label}</button>
+              </a>
+            `).join('')}
+          `;
         } else {
-          resultBox.innerText = "❌ Không lấy được link. Vui lòng thử lại.";
+          resultBox.innerHTML = "❌ Không lấy được link. Vui lòng thử lại.";
         }
       } catch (err) {
-        console.error(err);
-        resultBox.innerText = "⚠️ Lỗi kết nối đến API.";
+        console.error("⚠️ Lỗi fetch:", err);
+        resultBox.innerHTML = "⚠️ Lỗi kết nối đến API.";
       }
     }
   </script>
 </body>
 </html>
+
 
 
 
