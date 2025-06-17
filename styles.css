@@ -6,7 +6,7 @@ body {
   text-align: center;
 }
 .hero {
-  background: #ff6e4e;
+  background: #3902d0;
   color: white;
   padding: 40px 20px;
 }
@@ -62,4 +62,3 @@ img.thumbnail {
   color: #555;
   margin-bottom: 15px;
 }
-
