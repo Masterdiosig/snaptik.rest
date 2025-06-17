@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
   <title>SnapTok - Tải Video TikTok Không Logo</title>
   <style>
     body {
@@ -40,6 +41,10 @@
       cursor: pointer;
       width: 80%;
       display: block;
+      text-decoration: none;
+    }
+    .button-go:hover {
+      background-color: #573aff;
     }
     .result {
       margin-top: 20px;
@@ -106,9 +111,7 @@
             ${meta.author ? `<div class="author">@${meta.author}</div>` : ""}
             ${meta.description ? `<div class="desc">${meta.description}</div>` : ""}
             ${data.data.map(item => `
-              <a href="${item.url}" target="_blank">
-                <button class="button-go">⬇️ ${item.label}</button>
-              </a>
+              <a href="${item.url}" download class="button-go">⬇️ ${item.label}</a>
             `).join('')}
           `;
         } else {
@@ -122,6 +125,7 @@
   </script>
 </body>
 </html>
+
 
 
 
