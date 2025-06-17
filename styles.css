@@ -1,64 +1,69 @@
+:root {
+  color-scheme: only light;
+}
+
 body {
   font-family: Arial, sans-serif;
+  padding: 40px;
   background: #f0f0f0;
-  padding: 0;
-  margin: 0;
   text-align: center;
+  color: #222;
 }
-.hero {
-  background: #3902d0;
-  color: white;
-  padding: 40px 20px;
-}
-.container {
-  margin-top: 20px;
-  padding: 20px;
-}
+
 input {
   width: 80%;
   padding: 12px;
-  margin: 10px auto;
+  margin: 10px 0;
   font-size: 16px;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
-.button-go {
-  background-color: #6b4eff;
-  color: white;
+
+button {
   padding: 12px 20px;
-  margin: 10px auto;
   font-size: 16px;
+  background: #00be63;
+  color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  width: 80%;
-  display: block;
+  transition: background 0.2s;
 }
+
+button:hover {
+  background: #009c52;
+}
+
+.button-go {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 12px 20px;
+  background: #6b4eff;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
 .button-go:hover {
-  background-color: #573aff;
+  background: #4b30e0;
 }
+
 .result {
   margin-top: 20px;
-  padding: 20px;
-  background: white;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-img.thumbnail {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 10px;
-}
-.author {
   font-weight: bold;
-  margin: 5px 0;
 }
-.desc {
+
+.hint {
   font-size: 14px;
-  color: #555;
-  margin-bottom: 15px;
+  color: #666;
+  margin-top: 8px;
 }
+
+img.logo {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
