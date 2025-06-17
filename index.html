@@ -41,9 +41,6 @@
       width: 80%;
       display: block;
     }
-    .button-go:hover {
-      background-color: #573aff;
-    }
     .result {
       margin-top: 20px;
       padding: 20px;
@@ -85,14 +82,22 @@
   </div>
 
   <script>
-    function forceDownload(url, filename) {
-      const a = document.createElement("a");
-      a.href = url;
-      a.setAttribute("download", filename);
-      a.setAttribute("target", "_blank"); // fallback nếu CORS
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+    async function forceDownload(url, filename) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(blobUrl);
+      } catch (err) {
+        alert("❌ Không thể tải video: " + err.message);
+      }
     }
 
     async function download() {
@@ -114,15 +119,14 @@
 
         if (data.code === 0 && data.data.length > 0) {
           const meta = data.meta || {};
-         resultBox.innerHTML = `
-  ${meta.thumbnail ? `<img src="${meta.thumbnail}" alt="Thumbnail" class="thumbnail" />` : ""}
-  ${meta.author ? `<div class="author">@${meta.author}</div>` : ""}
-  ${meta.description ? `<div class="desc">${meta.description}</div>` : ""}
-  ${data.data.map((item, index) => `
-    <button class="button-go" onclick="forceDownload('${item.url}', 'video-${index + 1}.mp4')">⬇️ ${item.label}</button>
-  `).join('')}
-`;
-
+          resultBox.innerHTML = `
+            ${meta.thumbnail ? `<img src="${meta.thumbnail}" alt="Thumbnail" class="thumbnail" />` : ""}
+            ${meta.author ? `<div class="author">@${meta.author}</div>` : ""}
+            ${meta.description ? `<div class="desc">${meta.description}</div>` : ""}
+            ${data.data.map((item, index) => `
+              <button class="button-go" onclick="forceDownload('${item.url}', 'video-${index + 1}.mp4')">⬇️ ${item.label}</button>
+            `).join('')}
+          `;
         } else {
           resultBox.innerHTML = "❌ Không lấy được link. Vui lòng thử lại.";
         }
@@ -133,21 +137,8 @@
     }
   </script>
 </body>
-
-<script>
-  function forceDownload(url, filename) {
-    const a = document.createElement("a");
-    a.href = url;
-    a.setAttribute("download", filename);
-    a.setAttribute("target", "_blank"); // fallback nếu không ép được
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-</script>
-
-
 </html>
+
 
 
 
