@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SnapTok - Download TikTok Videos Without Watermark</title>
+  <link rel="stylesheet" href="../extra.css" />
+</head>
+<body>
+  <div class="hero">
+    <h1>SnapTok - Download TikTok Videos Without Watermark</h1>
+    <p>Paste your TikTok video link below to download instantly</p>
+  </div>
+
+  <div class="container">
+    <input type="text" id="tiktokUrl" placeholder="Paste TikTok link here..." />
+    <button class="button-go" onclick="download()">Download Video</button>
+    <div class="result" id="resultBox"></div>
+  </div>
+
+  <script>
+    async function forceDownload(url, filename) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(blobUrl);
+      } catch (err) {
+        alert("❌ Cannot download video: " + err.message);
+      }
+    }
+
+    async function download() {
+      const url = document.getElementById("tiktokUrl").value.trim();
+      const resultBox = document.getElementById("resultBox");
+      if (!url) return alert("Please enter a TikTok link.");
+
+      resultBox.innerHTML = "⏳ Processing...";
+
+      try {
+        const res = await fetch("https://www.snaptok.us/api/snaptik", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+
+        const data = await res.json();
+        if (data.code === 0 && data.data.length > 0) {
+          const meta = data.meta || {};
+          resultBox.innerHTML = `
+            ${
+              meta.thumbnail ? `<img src="${meta.thumbnail}" alt="Thumbnail" class="thumbnail" />` : ""
+            }
+            ${
+              meta.author ? `<div class="author">@${meta.author}</div>` : ""
+            }
+            ${
+              meta.description ? `<div class="desc">${meta.description}</div>` : ""
+            }
+            ${
+              data.data.map((item, index) => `
+                <button class="button-go" onclick="forceDownload('${item.url}', 'video-${index + 1}.mp4')">⬇️ ${item.label}</button>
+              `).join('')
+            }
+          `;
+        } else {
+          resultBox.innerHTML = "❌ Unable to fetch the video. Please try again.";
+        }
+      } catch (err) {
+        resultBox.innerHTML = "⚠️ Failed to connect to API.";
+      }
+    }
+  </script>
+</body>
+</html>
