@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
   <title>SnapTok - Tải Video TikTok Không Logo</title>
   <style>
     body {
@@ -41,7 +40,6 @@
       cursor: pointer;
       width: 80%;
       display: block;
-      text-decoration: none;
     }
     .button-go:hover {
       background-color: #573aff;
@@ -87,6 +85,16 @@
   </div>
 
   <script>
+    function forceDownload(url, filename) {
+      const a = document.createElement("a");
+      a.href = url;
+      a.setAttribute("download", filename);
+      a.setAttribute("target", "_blank"); // fallback nếu CORS
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
     async function download() {
       const url = document.getElementById("tiktokUrl").value.trim();
       const resultBox = document.getElementById("resultBox");
@@ -110,8 +118,8 @@
             ${meta.thumbnail ? `<img src="${meta.thumbnail}" alt="Thumbnail" class="thumbnail" />` : ""}
             ${meta.author ? `<div class="author">@${meta.author}</div>` : ""}
             ${meta.description ? `<div class="desc">${meta.description}</div>` : ""}
-            ${data.data.map(item => `
-              <a href="${item.url}" download class="button-go">⬇️ ${item.label}</a>
+            ${data.data.map((item, index) => `
+              <button class="button-go" onclick="forceDownload('${item.url}', 'video-${index + 1}.mp4')">⬇️ ${item.label}</button>
             `).join('')}
           `;
         } else {
@@ -125,6 +133,7 @@
   </script>
 </body>
 </html>
+
 
 
 
