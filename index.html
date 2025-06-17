@@ -114,14 +114,15 @@
 
         if (data.code === 0 && data.data.length > 0) {
           const meta = data.meta || {};
-          resultBox.innerHTML = `
-            ${meta.thumbnail ? `<img src="${meta.thumbnail}" alt="Thumbnail" class="thumbnail" />` : ""}
-            ${meta.author ? `<div class="author">@${meta.author}</div>` : ""}
-            ${meta.description ? `<div class="desc">${meta.description}</div>` : ""}
-            ${data.data.map((item, index) => `
-              <button class="button-go" onclick="forceDownload('${item.url}', 'video-${index + 1}.mp4')">⬇️ ${item.label}</button>
-            `).join('')}
-          `;
+         resultBox.innerHTML = `
+  ${meta.thumbnail ? `<img src="${meta.thumbnail}" alt="Thumbnail" class="thumbnail" />` : ""}
+  ${meta.author ? `<div class="author">@${meta.author}</div>` : ""}
+  ${meta.description ? `<div class="desc">${meta.description}</div>` : ""}
+  ${data.data.map((item, index) => `
+    <button class="button-go" onclick="forceDownload('${item.url}', 'video-${index + 1}.mp4')">⬇️ ${item.label}</button>
+  `).join('')}
+`;
+
         } else {
           resultBox.innerHTML = "❌ Không lấy được link. Vui lòng thử lại.";
         }
@@ -132,6 +133,20 @@
     }
   </script>
 </body>
+
+<script>
+  function forceDownload(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.setAttribute("download", filename);
+    a.setAttribute("target", "_blank"); // fallback nếu không ép được
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+</script>
+
+
 </html>
 
 
