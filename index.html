@@ -121,14 +121,14 @@ crossorigin="anonymous"></script>
         a.remove();
         URL.revokeObjectURL(blobUrl);
       } catch (err) {
-        alert("❌ Không thể tải video: " + err.message);
+        alert("❌ Unable to load video: " + err.message);
       }
     }
 
     async function download() {
       const url = document.getElementById("tiktokUrl").value.trim();
       const resultBox = document.getElementById("resultBox");
-      if (!url) return alert("Vui lòng nhập link TikTok.");
+      if (!url) return alert("Please enter TikTok link.");
 
       resultBox.innerHTML = "⏳ Đang xử lý...";
 
