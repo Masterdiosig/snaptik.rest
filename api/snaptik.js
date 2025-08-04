@@ -27,7 +27,7 @@ const finalUrl = await followRedirect(url);
 console.log("🔗 Final TikTok URL:", finalUrl);
 
 try {
-const response = await axios.get("https://tiktok-video-downloader-api.p.rapidapi.com/media", {
+const response = await axios.get("https://tiktok-download-video1.p.rapidapi.com/newGetVideo", {
 params: {
 url: finalUrl,
 hd: '1'
