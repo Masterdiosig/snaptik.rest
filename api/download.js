@@ -1,4 +1,4 @@
-const axios = require("axios");
+import axios from 'axios';
 
 export default async function handler(req, res) {
   const { url } = req.query;
@@ -13,7 +13,8 @@ export default async function handler(req, res) {
     });
 
     res.setHeader("Content-Disposition", 'attachment; filename="video.mp4"');
-    res.setHeader("Content-Type", response.headers["content-type"]);
+    res.setHeader("Content-Type", "application/octet-stream");
+
     response.data.pipe(res);
   } catch (err) {
     console.error("Lỗi tải:", err.message);
