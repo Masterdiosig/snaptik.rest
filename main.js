@@ -1,43 +1,73 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("downloadForm");
-    const videoURLInput = document.getElementById("videoURL");
-    const message = document.getElementById("message");
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.getElementById("hf_urli");
+  const resultBox = document.getElementById("result");
 
-    form.addEventListener("submit", async function (e) {
-        e.preventDefault();
-        const videoURL = videoURLInput.value.trim();
+  function showErrorInline(message) {
+    const box = document.getElementById("error-inline");
+    const msg = document.getElementById("error-inline-msg");
+    msg.textContent = message;
+    box.style.display = "block";
+    setTimeout(() => {
+      box.style.display = "none";
+    }, 4000);
+  }
 
-        if (!videoURL) {
-            showMessage("❌ Vui lòng nhập link TikTok hợp lệ", "error");
-            return;
-        }
+  document.getElementById("submit").addEventListener("click", async (e) => {
+    e.preventDefault();
+    const tiktokUrl = input.value.trim();
 
-        showMessage("⏳ Đang xử lý, vui lòng chờ...", "loading");
-
-        try {
-            // 📌 Gửi link đến backend (bạn cần viết API /api/download)
-            const res = await fetch(`/api/download?url=${encodeURIComponent(videoURL)}`);
-            if (!res.ok) throw new Error("Lỗi kết nối server");
-
-            const data = await res.json();
-            if (!data.downloadUrl) throw new Error("Không lấy được link tải");
-
-            // 📥 Tạo link ẩn và tải về
-            const a = document.createElement("a");
-            a.href = data.downloadUrl;
-            a.setAttribute("download", "");
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-
-            showMessage("✅ Tải xuống thành công!", "success");
-        } catch (err) {
-            showMessage("❌ Lỗi: " + err.message, "error");
-        }
-    });
-
-    function showMessage(text, type) {
-        message.textContent = text;
-        message.className = type;
+    if (!tiktokUrl) {
+      showErrorInline("Paste valid link!");
+      input.focus();
+      return;
     }
+
+    try {
+      const res = await fetch('/api/tiktok', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer my_super_secret_token_123' // đổi nếu bạn dùng token khác
+        },
+        body: JSON.stringify({ url: tiktokUrl })
+      });
+
+      const data = await res.json();
+
+      if (data.code === 0 && data.data.length > 0) {
+        resultBox.innerHTML = ''; // clear cũ
+
+        for (const item of data.data) {
+          const btn = document.createElement("button");
+          btn.textContent = item.label;
+          btn.style = "display:block;margin:10px 0;padding:10px;background:#007bff;color:#fff;border:none;border-radius:6px;cursor:pointer;";
+
+          btn.onclick = async () => {
+            try {
+              const response = await fetch(`/api/download?url=${encodeURIComponent(item.url)}`);
+              const blob = await response.blob();
+
+              const a = document.createElement('a');
+              a.href = URL.createObjectURL(blob);
+              a.download = "video.mp4"; // có thể dùng item.label nếu muốn tên riêng
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            } catch (err) {
+              console.error("Lỗi tải video:", err);
+              showErrorInline("Không tải được video.");
+            }
+          };
+
+          resultBox.appendChild(btn);
+        }
+      } else {
+        showErrorInline("Không tìm thấy video phù hợp!");
+      }
+
+    } catch (error) {
+      console.error("Lỗi gọi API TikTok:", error);
+      showErrorInline("Lỗi kết nối tới máy chủ!");
+    }
+  });
 });
