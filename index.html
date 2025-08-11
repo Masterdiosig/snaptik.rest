@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SnapTok - Tải Video TikTok Không Logo</title>
+     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnapTok - Tải Video TikTok Không Logo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-E6KMT8RHE4"></script>
@@ -57,53 +60,52 @@
 <link rel="manifest" href="/manifest.json">
 <meta name="theme-color" content="#ffffff">
 
- <link rel="stylesheet" href="extra.css" />
-
 
 </head>
+
 <body>
-  <div class="hero">
-    <h1>SnapTok - Download TikTok Videos Without Logo</h1>
-    <p>Paste TikTok video link to download quickly, no watermark</p>
+    <header>
+        <div class="container">
+            <h1 class="logo">SnapTok</h1>
+            <nav>
+                <a href="#features">Tính năng</a>
+                <a href="#howto">Hướng dẫn</a>
+                <a href="#policy">Điều khoản</a>
+            </nav>
+        </div>
+    </header>
 
-  </div>
+  <section class="hero">
+        <div class="container">
+            <h2>Tải video TikTok không logo, nhanh chóng & miễn phí</h2>
+            <p>Dán link TikTok vào ô bên dưới và nhấn tải xuống!</p>
+            <form id="downloadForm">
+                <input type="url" id="videoURL" placeholder="Dán link TikTok tại đây..." required>
+                <button type="submit">Tải ngay</button>
+            </form>
+            <div id="message"></div>
+        </div>
+    </section>
 
-  <div class="container">
-    <input type="text" id="tiktokUrl" placeholder="Paste TikTok link here..." />
-    <button class="button-go" onclick="download()">Download Video</button>
-    <div class="result" id="resultBox"></div>
-  </div>
+<section id="features" class="features">
+        <div class="container">
+            <h3>Điểm nổi bật</h3>
+            <ul>
+                <li>⚡ Nhanh chóng, không chờ đợi</li>
+                <li>🎯 Không logo, chất lượng HD</li>
+                <li>🔒 An toàn, không lưu dữ liệu</li>
+            </ul>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <p>© 2025 SnapTok. All rights reserved.</p>
+        </div>
+    </footer>
 
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6805310432922514"
-crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-style="display:block; text-align:center;"
-data-ad-layout="in-article"
-data-ad-format="fluid"
-data-ad-client="ca-pub-6805310432922514"
-data-ad-slot="1405407353"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6805310432922514"
-crossorigin="anonymous"></script>
-<!-- C0 -->
-<ins class="adsbygoogle"
-style="display:block"
-data-ad-client="ca-pub-6805310432922514"
-data-ad-slot="5587630291"
-data-ad-format="auto"
-data-full-width-responsive="true"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6805310432922514"
-crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+</body>
+</html>
 
 
   <script>
@@ -160,6 +162,7 @@ crossorigin="anonymous"></script>
         resultBox.innerHTML = "⚠️ Lỗi kết nối đến API.";
       }
     }
+
   </script>
 </body>
 </html>
