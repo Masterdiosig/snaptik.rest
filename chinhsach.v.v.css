@@ -81,8 +81,8 @@ body{
 }
 
 /* Headings + paragraphs */
-h1{ font-size: 1.6rem; margin-bottom: 12px; color: #0b1220; }
-h2{ font-size: 1.05rem; margin-top: 18px; margin-bottom: 8px; color: #0b1220; }
+h1{ font-size: 1.6rem; margin-bottom: 12px; color: #2716c5; }
+h2{ font-size: 1.05rem; margin-top: 18px; margin-bottom: 8px; color: #151414c4; }
 p{ color: var(--muted); margin: 10px 0; font-size: 0.98rem; }
 
 /* Notice box */
@@ -138,7 +138,7 @@ a:focus, a:hover{ text-decoration: underline; outline: none; }
   font-size: 1.05rem;
   margin-top: 16px;
   margin-bottom: 6px;
-  color: #020202c6;
+  color: #151414c4;
 }
 
 .lang-block p {
