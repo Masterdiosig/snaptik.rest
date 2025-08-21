@@ -77,17 +77,16 @@
         </div>
     </header>
 
-
   <section class="hero">
-        <div class="container">
-            <h2>Download TikTok Video</h2>
-            <form id="downloadForm">
-                <input type="url" id="videoURL" placeholder="Paste link here..." required>
-                <button type="submit">Download</button>
-            </form>
-            <div id="message"></div>
-        </div>
-    </section>
+    <div class="container">
+      <h2>Download TikTok Video</h2>
+      <form id="downloadForm">
+        <input type="url" id="tiktokUrl" placeholder="Paste TikTok link here..." required>
+        <button type="submit">Download</button>
+      </form>
+      <div id="resultBox"></div>
+    </div>
+  </section>
 
 
 <section id="features" class="features">
@@ -253,18 +252,19 @@
             <p>© 2025 Snaptik.rest. All rights reserved.</p>
 </div>
  <footer>
-    <script src="main.js"></script>
-</body>
-</html>
-
 
   <script>
-    async function forceDownload(url, filename) {
+    document.getElementById("downloadForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      download();
+    });
+
+
+async function forceDownload(url, filename) {
       try {
         const response = await fetch(url);
         const blob = await response.blob();
         const blobUrl = URL.createObjectURL(blob);
-
         const a = document.createElement("a");
         a.href = blobUrl;
         a.download = filename;
@@ -281,7 +281,6 @@
       const url = document.getElementById("tiktokUrl").value.trim();
       const resultBox = document.getElementById("resultBox");
       if (!url) return alert("Please enter TikTok link.");
-
       resultBox.innerHTML = "⏳ Đang xử lý...";
 
       try {
@@ -290,10 +289,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ url })
         });
-
         const data = await res.json();
-        console.log("📦 API trả về:", data);
-
         if (data.code === 0 && data.data.length > 0) {
           const meta = data.meta || {};
           resultBox.innerHTML = `
@@ -312,7 +308,8 @@
         resultBox.innerHTML = "⚠️ Lỗi kết nối đến API.";
       }
     }
-
   </script>
+
+  <script src="main.js"></script>
 </body>
 </html>
