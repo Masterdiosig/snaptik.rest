@@ -314,9 +314,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("downloadForm");
   const input = document.getElementById("tiktokUrl");
-  const statusBox = document.getElementById("resultBox"); // sửa lại
+  const resultBox = document.getElementById("resultBox");
 
-  form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
     const url = input.value.trim();
     if (!url) {
@@ -324,31 +324,14 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    statusBox.textContent = "⏳ Đang xử lý...";
+    resultBox.textContent = "⏳ Đang xử lý...";
 
-    try {
-      const res = await fetch(`/api/tiktok?url=${encodeURIComponent(url)}&token=my_super_secret_token_123`);
-      if (!res.ok) {
-        statusBox.textContent = "⚠️ Lỗi server!";
-        return;
-      }
+    // 👉 Safari sẽ tự tải file về Files
+    window.location.href = `/api/tiktok?url=${encodeURIComponent(url)}&token=my_super_secret_token_123`;
 
-      const blob = await res.blob();
-      const downloadUrl = URL.createObjectURL(blob);
-
-      const a = document.createElement("a");
-      a.href = downloadUrl;
-      a.download = "SnapSave.Dev.mp4";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(downloadUrl);
-
-      statusBox.textContent = "✅ File đã tải về!";
-    } catch (err) {
-      console.error("Lỗi tải:", err);
-      statusBox.textContent = "⚠️ Không tải được video.";
-    }
+    setTimeout(() => {
+      resultBox.textContent = "✅ Đang tải file. Nếu chưa thấy, kiểm tra ứng dụng Tệp.";
+    }, 2000);
   });
 });
 
