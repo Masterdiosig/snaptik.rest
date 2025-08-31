@@ -67,27 +67,36 @@
 </head>
 
 <body>
-    <header>
-        <div class="container">
-            <h2 class="logo">Snaptik.rest</h2>
-            <nav>
-                <a href="index.html">Trang chủ</a>
-                <a href="#howto">Hướng dẫn</a>
-                <a href="terms.html">Điều khoản</a>
-            </nav>
-        </div>
-    </header>
+     <!-- Menu -->
+  <nav class="navbar">
+<div class="banner">
+    <img src="download.svg" alt="User manual" style="width: 100%; max-width: 600px; display: block; margin: 0 auto;" />
+  </div>
 
-    <section class="hero">
-        <div class="container">
-            <h2>Download TikTok Video</h2>
-            <form id="downloadForm">
-                <input type="url" id="tiktokUrl" placeholder="Paste TikTok link here..." required>
-                <button type="submit">Download</button>
-            </form>
-            <div id="resultBox"></div>
-        </div>
-    </section>
+    <div class="nav-toggle"><i class="fa-solid fa-bars"></i></div>
+    <ul class="nav-links">
+      <li><a href="#">Trang chủ</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="dmca.html">DMCA</a></li>
+    </ul>
+  </nav>
+
+      <!-- Header -->
+  <header class="header">
+    <h1><span class="logo">Snapsave.dev</span></h1>
+    <p class="subtitle">Tải video TikTok chất lượng cao không watermark</p>
+  </header>
+
+     <section class="">
+  <div class="container">
+    <form id="downloadForm" class="download-form">
+      <input type="text" id="tiktokUrl" placeholder="Dán link TikTok vào đây..." />
+      <button type="submit">⬇️ Tải video</button>
+    <button type="button" id="pasteBtn">Paste</button>
+    </form>
+    <div id="status"></div>
+  </div>
+</section>
 
     <!-- Nội dung chính (giữ nguyên như bạn gửi) -->
     <section class="content container">
@@ -103,5 +112,91 @@
 
     <!-- Script -->
     <script src="main.js"></script>
+    <script>
+    // Toggle menu
+document.querySelector(".nav-toggle").addEventListener("click", () => {
+  document.querySelector(".nav-links").classList.toggle("show");
+});
+
+// FAQ toggle
+document.querySelectorAll(".faq-question").forEach((btn) => {
+  btn.addEventListener("click", () =>
+    btn.parentElement.classList.toggle("active")
+  );
+});
+
+const form = document.getElementById("downloadForm");
+    const input = document.getElementById("tiktokUrl");
+    const statusBox = document.getElementById("status");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const url = input.value.trim();
+      if (!url) {
+        alert("❌ Vui lòng nhập link TikTok");
+        return;
+      }
+
+      statusBox.textContent = "⏳ Đang xử lý...";
+
+      // 👉 Redirect thẳng đến server API (Safari sẽ tải file vào Tệp)
+      window.location.href = `/api/tiktok?url=${encodeURIComponent(url)}&token=my_super_secret_token_123`;
+
+      // Hiện thông báo (trong khi Safari tải)
+      setTimeout(() => {
+        statusBox.textContent = "✅ Nếu không thấy tải, hãy kiểm tra lại link TikTok.";
+      }, 2000);
+    });
+
+// Nút paste/clear
+  pasteBtn.addEventListener("click", async () => {
+    if (pasteBtn.textContent === "Paste") {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          input.value = text;
+          pasteBtn.textContent = "Clear";
+        }
+      } catch (err) {
+        console.error("Clipboard error:", err);
+      }
+    } else {
+      input.value = "";
+      pasteBtn.textContent = "Paste";
+      input.focus();
+    }
+  });
+
+  // Nếu xoá input thì nút trở về "Paste"
+  input.addEventListener("input", () => {
+    if (!input.value.trim()) pasteBtn.textContent = "Paste";
+  });
+
+ // Khi DOM sẵn sàng
+ document.addEventListener("DOMContentLoaded", () => {
+const form = document.getElementById("downloadForm");
+  const resultBox = document.getElementById("resultBox");
+  const pasteBtn = document.getElementById("pasteBtn"); 
+
+document.addEventListener("DOMContentLoaded", async () => {
+  if (navigator.clipboard?.readText) {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text.startsWith("http")) {
+        const input = document.getElementById("tiktokUrl");
+         
+        input.value = text;
+      }
+    } catch (err) {
+      console.warn("Clipboard không khả dụng:", err);
+    }
+  }
+});
+
+  // Cập nhật năm footer
+  document.getElementById("y").textContent = new Date().getFullYear();
+});
+
+  </script>
 </body>
 </html>
