@@ -310,94 +310,59 @@
 </div>
  <footer>
 
-  <script>
+ <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // ===== Toggle menu =====
-  const navToggle = document.querySelector(".nav-toggle");
-  const navLinks = document.querySelector(".nav-links");
-  if (navToggle && navLinks) {
-    navToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("show");
-    });
-  }
-
-  // ===== FAQ toggle =====
-  document.querySelectorAll(".faq-question").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      btn.parentElement.classList.toggle("active");
-    });
-  });
-
-  // ===== Download form =====
   const form = document.getElementById("downloadForm");
   const input = document.getElementById("tiktokUrl");
   const statusBox = document.getElementById("status");
   const pasteBtn = document.getElementById("pasteBtn");
-  const resultBox = document.getElementById("resultBox");
 
-  if (form && input) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const url = input.value.trim();
-      if (!url) {
-        alert("❌ Vui lòng nhập link TikTok");
-        return;
-      }
+  // Khi bấm "Download"
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const url = input.value.trim();
+    if (!url) {
+      alert("❌ Vui lòng nhập link TikTok");
+      return;
+    }
 
-      statusBox.textContent = "⏳ Đang xử lý...";
+    statusBox.textContent = "⏳ Đang xử lý...";
+    
+    // 👉 gọi thẳng server.js API để tải
+    window.location.href = `/api/tiktok?url=${encodeURIComponent(url)}&token=my_super_secret_token_123`;
 
-      // 👉 Redirect thẳng đến server API để tải
-      window.location.href = `/api/tiktok?url=${encodeURIComponent(url)}&token=my_super_secret_token_123`;
+    // sau 2s báo cho user
+    setTimeout(() => {
+      statusBox.textContent = "✅ Nếu không thấy tải, hãy kiểm tra lại link TikTok.";
+    }, 2000);
+  });
 
-      // Hiện thông báo (trong khi Safari tải)
-      setTimeout(() => {
-        statusBox.textContent = "✅ Nếu không thấy tải, hãy kiểm tra lại link TikTok.";
-      }, 2000);
-    });
-  }
-
-  // ===== Paste / Clear button =====
-  if (pasteBtn && input) {
-    pasteBtn.addEventListener("click", async () => {
-      if (pasteBtn.textContent === "Paste") {
-        try {
-          const text = await navigator.clipboard.readText();
-          if (text) {
-            input.value = text;
-            pasteBtn.textContent = "Clear";
-          }
-        } catch (err) {
-          console.error("Clipboard error:", err);
+  // Nút Paste / Clear
+  pasteBtn.addEventListener("click", async () => {
+    if (pasteBtn.textContent === "Paste") {
+      try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          input.value = text;
+          pasteBtn.textContent = "Clear";
         }
-      } else {
-        input.value = "";
-        pasteBtn.textContent = "Paste";
-        input.focus();
+      } catch (err) {
+        console.error("Clipboard error:", err);
       }
-    });
+    } else {
+      input.value = "";
+      pasteBtn.textContent = "Paste";
+      input.focus();
+    }
+  });
 
-    // Nếu xoá input thì nút trở về "Paste"
-    input.addEventListener("input", () => {
-      if (!input.value.trim()) pasteBtn.textContent = "Paste";
-    });
-  }
-
-  // ===== Auto paste từ Clipboard khi load trang =====
-  if (navigator.clipboard?.readText) {
-    navigator.clipboard.readText().then((text) => {
-      if (text.startsWith("http") && input) {
-        input.value = text;
-      }
-    }).catch((err) => {
-      console.warn("Clipboard không khả dụng:", err);
-    });
-  }
-
-  // ===== Cập nhật năm ở footer =====
-  const yearEl = document.getElementById("y");
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  // Nếu xoá input thì nút trở lại "Paste"
+  input.addEventListener("input", () => {
+    if (!input.value.trim()) pasteBtn.textContent = "Paste";
+  });
 });
 </script>
+
 
   <script src="main.js"></script>
 </body>
