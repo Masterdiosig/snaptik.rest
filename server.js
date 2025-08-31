@@ -58,7 +58,7 @@ app.get("/api/tiktok", async (req, res) => {
     // 👉 Stream video trực tiếp về client
     const videoStream = await axios.get(videoUrl, { responseType: "stream" });
     res.setHeader("Content-Type", "video/mp4");
-    res.setHeader("Content-Disposition", `attachment; filename="SnapSave.Dev.mp4"`);
+    res.setHeader("Content-Disposition", `attachment; filename="Snaptik.rest.mp4"`);
     videoStream.data.pipe(res);
   } catch (err) {
     console.error("❌ Lỗi server:", err.response?.data || err.message);
