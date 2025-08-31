@@ -310,15 +310,13 @@
 </div>
  <footer>
 
- <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("downloadForm");
   const input = document.getElementById("tiktokUrl");
   const statusBox = document.getElementById("status");
-  const pasteBtn = document.getElementById("pasteBtn");
 
-  // Khi bấm "Download"
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const url = input.value.trim();
     if (!url) {
@@ -327,41 +325,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     statusBox.textContent = "⏳ Đang xử lý...";
-    
-    // 👉 gọi thẳng server.js API để tải
-    window.location.href = `/api/tiktok?url=${encodeURIComponent(url)}&token=my_super_secret_token_123`;
 
-    // sau 2s báo cho user
-    setTimeout(() => {
-      statusBox.textContent = "✅ Nếu không thấy tải, hãy kiểm tra lại link TikTok.";
-    }, 2000);
-  });
-
-  // Nút Paste / Clear
-  pasteBtn.addEventListener("click", async () => {
-    if (pasteBtn.textContent === "Paste") {
-      try {
-        const text = await navigator.clipboard.readText();
-        if (text) {
-          input.value = text;
-          pasteBtn.textContent = "Clear";
-        }
-      } catch (err) {
-        console.error("Clipboard error:", err);
+    try {
+      const res = await fetch(`/api/tiktok?url=${encodeURIComponent(url)}&token=my_super_secret_token_123`);
+      if (!res.ok) {
+        statusBox.textContent = "⚠️ Lỗi server!";
+        return;
       }
-    } else {
-      input.value = "";
-      pasteBtn.textContent = "Paste";
-      input.focus();
-    }
-  });
 
-  // Nếu xoá input thì nút trở lại "Paste"
-  input.addEventListener("input", () => {
-    if (!input.value.trim()) pasteBtn.textContent = "Paste";
+      // Lấy blob từ stream
+      const blob = await res.blob();
+      const downloadUrl = URL.createObjectURL(blob);
+
+      // Tạo <a download> để ép tải
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = "SnapSave.Dev.mp4";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(downloadUrl);
+
+      statusBox.textContent = "✅ File đã tải về!";
+    } catch (err) {
+      console.error("Lỗi tải:", err);
+      statusBox.textContent = "⚠️ Không tải được video.";
+    }
   });
 });
 </script>
+
 
 
   <script src="main.js"></script>
