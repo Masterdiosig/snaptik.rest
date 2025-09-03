@@ -253,13 +253,10 @@
     <!-- adsterra -->
   <script async="async" data-cfasync="false" src="//pl27570643.revenuecpmgate.com/9494ba0714567dd06aa230efd001cc92/invoke.js"></script>
 <div id="container-9494ba0714567dd06aa230efd001cc92"></div>
-
-
 <div id="ad-fixed-bottom">
-  <!-- Banner Adsterra -->
   <script type="text/javascript">
     atOptions = {
-      'key' : '6c9f48264407cce77b20bc6935d51b04', // 🔑 key Banner của bạn
+      'key' : '6c9f48264407cce77b20bc6935d51b04',
       'format' : 'iframe',
       'height' : 50,
       'width' : 320,
@@ -268,15 +265,10 @@
   </script>
   <script type="text/javascript" src="//www.highperformanceformat.com/6c9f48264407cce77b20bc6935d51b04/invoke.js"></script>
 
-  <!-- Social Bar -->
-  <script type="text/javascript" src="//pl27570735.revenuecpmgate.com/8c/8a/c4/8c8ac45db0d2e0a3ffa43afba8cfbe02.js"></script>
-
-  <!-- Nút close -->
   <button id="ad-close-btn">✖</button>
 </div>
 
 <style>
-/* Container */
 #ad-fixed-bottom {
   position: fixed;
   bottom: 0;
@@ -289,15 +281,12 @@
   padding: 4px 8px;
   border-radius: 8px 8px 0 0;
   display: inline-block;
-  min-height: 60px; /* chừa chỗ cho Social Bar */
 }
 
-/* Ẩn khi scroll */
 #ad-fixed-bottom.hide {
-  bottom: -100px;
+  bottom: -80px;
 }
 
-/* Nút close */
 #ad-close-btn {
   position: absolute;
   top: -10px;
@@ -318,23 +307,20 @@
   background: #cc0000;
 }
 </style>
-
 <script>
 let lastScrollTop = 0;
 const ad = document.getElementById("ad-fixed-bottom");
 
-// Ẩn/hiện khi scroll
 window.addEventListener("scroll", function() {
   let st = window.pageYOffset || document.documentElement.scrollTop;
   if (st > lastScrollTop) {
-    ad.classList.add("hide"); // scroll xuống -> ẩn
+    ad.classList.add("hide"); 
   } else {
-    ad.classList.remove("hide"); // scroll lên -> hiện
+    ad.classList.remove("hide"); 
   }
   lastScrollTop = st <= 0 ? 0 : st;
 }, false);
 
-// Nút đóng hẳn
 document.getElementById("ad-close-btn").addEventListener("click", function() {
   ad.style.display = "none";
 });
