@@ -9,47 +9,75 @@
 </head>
 <body>
 
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="/" class="logo">MyBlog</a>
+
+    <!-- Nút menu mobile -->
+    <div class="menu-toggle" id="menu-toggle">☰</div>
+
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Trang chủ</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+      <li><a href="/lienhe.html">Liên hệ</a></li>
+    </ul>
+  </div>
+</nav>
+
+
   <article class="blog-container">
     <h1 class="blog-title">Cách tạo tài khoản Facebook nhanh chóng</h1>
     <p class="blog-intro">
       Facebook là mạng xã hội lớn nhất thế giới. Nếu bạn chưa có tài khoản, hãy làm theo các bước sau để đăng ký nhanh chóng và an toàn.
     </p>
 
+    <!-- Mục lục -->
     <div class="toc">
       <h2>Mục lục</h2>
       <ul>
         <li><a href="#step1">Bước 1: Vào trang đăng ký Facebook</a></li>
         <li><a href="#step2">Bước 2: Điền thông tin cá nhân</a></li>
         <li><a href="#step3">Bước 3: Xác minh tài khoản</a></li>
-        <li><a href="#ketluan">Kết luận</a></li>
-      </ul>
-    </div>
-
-    <h2 id="step1">Bước 1: Vào trang đăng ký Facebook</h2>
-    <p>
-      Truy cập vào trang chính thức của Facebook tại 
-      <a href="https://www.facebook.com/" target="_blank">facebook.com</a> 
-      hoặc tải ứng dụng Facebook từ App Store/Google Play.
-    </p>
-
-    <h2 id="step2">Bước 2: Điền thông tin cá nhân</h2>
-    <p>
-      Nhập đầy đủ họ tên, email hoặc số điện thoại, mật khẩu và ngày sinh. 
-      Hãy chọn mật khẩu mạnh để bảo vệ tài khoản của bạn.
-    </p>
-
-    <h2 id="step3">Bước 3: Xác minh tài khoản</h2>
-    <p>
-      Facebook sẽ gửi mã xác minh qua email hoặc SMS. 
-      Hãy nhập mã để hoàn tất quá trình đăng ký.
-    </p>
-
-    <h2 id="ketluan">Kết luận</h2>
+           <h2 id="ketluan">Kết luận</h2>
     <p>
       Chỉ với 3 bước đơn giản, bạn đã có thể tạo tài khoản Facebook để kết nối bạn bè và gia đình. 
       Hãy nhớ cài đặt bảo mật 2 lớp để an toàn hơn khi sử dụng.
     </p>
   </article>
+
+   <!-- Tag / Chủ đề -->
+  <div class="tags">
+    <span>Chủ đề:</span>
+    <a href="/tag/facebook.html">Facebook</a>
+    <a href="/tag/dang-ky.html">Đăng ký</a>
+    <a href="/tag/bao-mat.html">Bảo mật</a>
+  </div>
+
+  <!-- Chia sẻ mạng xã hội -->
+  <div class="share-buttons">
+    <span>Chia sẻ:</span>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://example.com/huongdan.html" target="_blank" class="fb">F</a>
+    <a href="https://twitter.com/intent/tweet?url=https://example.com/huongdan.html&text=Cách tạo tài khoản Facebook nhanh chóng" target="_blank" class="tw">T</a>
+    <a href="https://zalo.me/share?url=https://example.com/huongdan.html" target="_blank" class="zalo">Z</a>
+    <a href="#" onclick="copyLink(event)" class="copy">⧉</a>
+  </div>
+
+  <!-- Bài viết liên quan -->
+  <section class="related-posts">
+    <h2>Bài viết liên quan</h2>
+    <div class="related-list">
+      ...
+    </div>
+  </section>
+
+  <script>
+    function copyLink(e) {
+      e.preventDefault();
+      navigator.clipboard.writeText(window.location.href);
+      alert("Đã copy link bài viết!");
+    }
+  </script>
+
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -74,6 +102,14 @@
       });
     });
   </script>
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const navLinks = document.getElementById("nav-links");
+
+  toggle.addEventListener("click", () => {
+    navLinks.classList.toggle("show");
+  });
+</script>
 
 </body>
 </html>
