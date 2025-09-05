@@ -3,34 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Snaptik.rest - DMCA Policy (VI & EN)</title>
-  <link rel="stylesheet" href="chinhsach.v.v.css" />
+  <title>Snaptik.rest - DMCA Policy</title>
+  <link rel="stylesheet" href="blog.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="shortcut icon" href="https://www.snaptik.rest/snaptik.png" type="image/x-icon"/>
 </head>
 <body>
-  <header class="site-header">
-    <div class="wrap">
-      <nav class="main-nav">
-     
-      </nav>
-    </div>
-  </header>
+ 
+<article class="blog-container">
+    <h1 class="blog-title">Contact Us</h1>
+    <p class="blog-intro">
+    
+    </p>
 
-  <header>
-  <div class="wrap">
-       <nav class="footer-nav">
-        <a href="index.html">Trang chủ</a>
-        <a href="https://www.snaptok.us/#howto">Hướng dẫn</a>
-        <a href="terms.html">Điều khoản</a>
-      </nav></div></header>
+    <div class="toc">
+      <h2>Menu</h2>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="dmca.html">DMCA</a></li>
+      </ul>
+    </div>
 
        <main class="content">
     <section class="dmca wrap" aria-labelledby="dmca-title">
-      <h1 id="dmca-title"> Liên hệ / Contact</h1>
+      <h1 id="dmca-title">Contact</h1>
       <div class="lang-columns">
   <div class="lang-block" lang="en">
-    <h2>Contact Us</h2>
+    
     <p>If you have any questions or need assistance, please contact us via email:</p>
     <p><strong>Email:</strong> nhn19892020@gmail.com</p>
     <p>We will respond withxin 24 working hours.</p></div>
@@ -39,31 +41,33 @@
     <h2>Liên hệ với chúng tôi</h2>
     <p>Nếu bạn có bất kỳ câu hỏi hoặc yêu cầu hỗ trợ, vui lòng liên hệ qua email:</p>
     <p><strong>Email:</strong> nhn19892020@gmail.com</p>
-    <p>Chúng tôi sẽ phản hồi trong vòng 24 giờ làm việc.</p>
+    <p>Chúng tôi sẽ phản hồi trong vòng 24 giờ làm việc.</p></article>
   </div>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const sections = document.querySelectorAll("article h2[id]");
+      const navLinks = document.querySelectorAll(".toc ul li a");
 
-      </div>
-    </section>
-  </main>
+      window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 80; // trừ margin trên
+          if (pageYOffset >= sectionTop) {
+            current = section.getAttribute("id");
+          }
+        });
 
-  <footer class="site-footer">
-    <div class="wrap footer-inner">
-      <div class="copyright">
-        <p>&copy; 2025 Snaptik.rest All rights reserved.</p>
-        <p class="small">
-          This site is not affiliated with or endorsed by TikTok. 
-          TikTok is a registered trademark of ByteDance Ltd. 
-          All video rights belong to their respective owners.
-        </p>
-      </div>
-      <nav class="footer-nav">
-        <a href="privacy.html">Privacy</a>
-        <a href="dmca.html">DMCA</a>
-        <a href="contact.html">Contact</a>
-      </nav>
-    </div>
-  </footer>
+        navLinks.forEach(link => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#" + current) {
+            link.classList.add("active");
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>
 

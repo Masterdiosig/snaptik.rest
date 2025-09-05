@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cách tạo tài khoản Facebook nhanh chóng</title>
+  <meta name="description" content="Hướng dẫn chi tiết cách đăng ký tài khoản Facebook trên điện thoại và máy tính.">
+  <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+
+  <article class="blog-container">
+    <h1 class="blog-title">Cách tạo tài khoản Facebook nhanh chóng</h1>
+    <p class="blog-intro">
+      Facebook là mạng xã hội lớn nhất thế giới. Nếu bạn chưa có tài khoản, hãy làm theo các bước sau để đăng ký nhanh chóng và an toàn.
+    </p>
+
+    <div class="toc">
+      <h2>Mục lục</h2>
+      <ul>
+        <li><a href="#step1">Bước 1: Vào trang đăng ký Facebook</a></li>
+        <li><a href="#step2">Bước 2: Điền thông tin cá nhân</a></li>
+        <li><a href="#step3">Bước 3: Xác minh tài khoản</a></li>
+        <li><a href="#ketluan">Kết luận</a></li>
+      </ul>
+    </div>
+
+    <h2 id="step1">Bước 1: Vào trang đăng ký Facebook</h2>
+    <p>
+      Truy cập vào trang chính thức của Facebook tại 
+      <a href="https://www.facebook.com/" target="_blank">facebook.com</a> 
+      hoặc tải ứng dụng Facebook từ App Store/Google Play.
+    </p>
+
+    <h2 id="step2">Bước 2: Điền thông tin cá nhân</h2>
+    <p>
+      Nhập đầy đủ họ tên, email hoặc số điện thoại, mật khẩu và ngày sinh. 
+      Hãy chọn mật khẩu mạnh để bảo vệ tài khoản của bạn.
+    </p>
+
+    <h2 id="step3">Bước 3: Xác minh tài khoản</h2>
+    <p>
+      Facebook sẽ gửi mã xác minh qua email hoặc SMS. 
+      Hãy nhập mã để hoàn tất quá trình đăng ký.
+    </p>
+
+    <h2 id="ketluan">Kết luận</h2>
+    <p>
+      Chỉ với 3 bước đơn giản, bạn đã có thể tạo tài khoản Facebook để kết nối bạn bè và gia đình. 
+      Hãy nhớ cài đặt bảo mật 2 lớp để an toàn hơn khi sử dụng.
+    </p>
+  </article>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const sections = document.querySelectorAll("article h2[id]");
+      const navLinks = document.querySelectorAll(".toc ul li a");
+
+      window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop - 80; // trừ margin trên
+          if (pageYOffset >= sectionTop) {
+            current = section.getAttribute("id");
+          }
+        });
+
+        navLinks.forEach(link => {
+          link.classList.remove("active");
+          if (link.getAttribute("href") === "#" + current) {
+            link.classList.add("active");
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
+
