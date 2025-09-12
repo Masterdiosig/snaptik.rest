@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://snaptik.rest/</loc>
+    <lastmod>2025-09-06T01:20:02+00:00</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://snaptik.rest/index.html</loc>
+    <lastmod>2025-09-10T08:25:27+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://snaptik.rest/terms.html</loc>
+    <lastmod>2025-09-10T08:25:27+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://snaptik.rest/id/index.html</loc>
+    <lastmod>2025-09-09T20:16:15+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://snaptik.rest/privacy.html</loc>
+    <lastmod>2025-09-10T08:25:27+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://snaptik.rest/dmca.html</loc>
+    <lastmod>2025-09-10T08:25:28+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://snaptik.rest/contact.html</loc>
+    <lastmod>2025-09-09T20:16:14+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://snaptik.rest/Instruct.html</loc>
+    <lastmod>2025-09-10T08:25:28+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+
+  <url>
+    <loc>https://snaptik.rest/blog.htm</loc>
+    <lastmod>2025-09-10T08:25:28+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+
+</urlset>
